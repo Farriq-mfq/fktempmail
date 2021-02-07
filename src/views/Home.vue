@@ -123,17 +123,16 @@ export default {
   },
   mounted(){
     let self = this;
-    const mail = self.email;
-    const x = mail.split('@');
-    self.username = x[0];
-    self.domain = x[1];
-  axios.get('https://www.1secmail.com/api/v1/?action=genRandomMailbox').then(function(res){
-      if(!localStorage.getItem('email')){
-        localStorage.setItem('email',res.data[0]);
+    axios.get('https://www.1secmail.com/api/v1/?action=genRandomMailbox').then(function(res){
+      if(localStorage.getItem('email')===null){
+        localStorage.setItem('email',res.data[0])
+        self.email = localStorage.getItem('email')
       }
-    }).catch(e=>{
-      console.log(e)
     })
+      const mail = self.email;
+      const x = mail.split('@');
+      self.username = x[0];
+      self.domain = x[1];
     axios.get(`https://www.1secmail.com/api/v1/?action=getMessages&login=${self.username}&domain=${self.domain}`).then(function(res){
       if(res.data != ""){
         self.emailnull = false;
